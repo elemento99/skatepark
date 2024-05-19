@@ -1,10 +1,40 @@
 
 const registerForm = document.querySelector('#registro')
-const loginForm = document.querySelector('login')
+const loginForm = document.querySelector('#login')
 
-// loginForm.addEventListener('submit', async (e) => {
-//     e.preventDefault
-// })
+// const token = localStorage.getItem('token')
+// if (!token) {
+//     window.location.href = "/login"
+// }
+// const config = {
+//     headers: {
+//         Authorization: `Bearer ${token}`
+//     }
+// }
+
+loginForm.addEventListener('submit', async (e) => {
+    try{
+        e.preventDefault()
+
+        const email = e.target.email.value
+        const password = e.target.password.value
+        const {data}= await axios.post('/users/login', { email, password })
+        localStorage.setItem('token', data.token)
+        const { data: userData } = await axios.post('/users/idEmail', { email });
+        const userId = userData.id;
+
+        alert('Credenciales correctas... redirigiendo al dashboard');
+        window.location.href = `/datos/${userId}`;
+        console.log(data)
+    }catch (error) {
+        console.error(error)
+        if (error.response && error.response.data && error.response.data.msg) {
+            alert(error.response.data.msg)
+        } else {
+            alert('Ocurrió un error al procesar la solicitud.')
+        }
+    }
+})
 
 registerForm.addEventListener('submit', async (e) => {
     try {
@@ -18,17 +48,6 @@ registerForm.addEventListener('submit', async (e) => {
         const foto = "foto"
         const estado = true
 
-        // const formData = new FormData()
-        // formData.append('email', email)
-        // formData.append('nombre', nombre)
-        // formData.append('password', password)
-        // //formData.append('password2', password2)  // Agregar password2 si es necesario en backend
-        // formData.append('anos_experiencia', anos_experiencia)
-        // formData.append('especialidad', especialidad)
-        // formData.append('foto', foto)
-        // formData.append('estado', estado)
-
-    
         const response = await axios.post('/users/register', { 
             email, 
             nombre, 
@@ -53,3 +72,4 @@ registerForm.addEventListener('submit', async (e) => {
         }
     }
 })
+

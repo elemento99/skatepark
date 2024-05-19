@@ -36,6 +36,48 @@ const login = async (req, res) => {
     }
 }
 
+
+const idEmail = async (req, res) => {
+    try {
+        const { email} = req.body
+        const user = await UserModel.findOneByEmail(email)
+
+        if (!user) return res.status(400).json({
+            ok: false,
+            msg: "El email no está registrado"
+        })
+
+        return res.json({
+            id: user.id
+        })
+    } catch (error) {
+        console.log(error)
+        const { code, msg } = handleErrorDatabase(error)
+        return res.status(code).json({ ok: false, msg })
+    }
+}
+
+const usuarioId = async (req, res) => {
+    try {
+        const { id} = req.params
+        const user = await UserModel.findOneById(id)
+
+        if (!user) return res.status(400).json({
+            ok: false,
+            msg: "El email no está registrado"
+        })
+
+        return res.json({
+            user
+        })
+    } catch (error) {
+        console.log(error)
+        const { code, msg } = handleErrorDatabase(error)
+        return res.status(code).json({ ok: false, msg })
+    }
+}
+
+
 const register = async (req, res) => {
     try {
         const { email, nombre, password, anos_experiencia, especialidad, foto,estado } = req.body
@@ -106,5 +148,7 @@ export const UserController = {
     actualizarUsuario,
     login,
     register,
-    eliminarUsuario
+    eliminarUsuario,
+    idEmail,
+    usuarioId
 }

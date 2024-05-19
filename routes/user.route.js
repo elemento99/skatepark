@@ -7,5 +7,7 @@ router.post('/login', UserController.login)
 router.post('/register', UserController.register)
 router.put('/:id', UserController.actualizarUsuario)
 router.delete('/:id', UserController.eliminarUsuario)
+router.post('/idEmail', UserController.idEmail)
+router.get('/:id', UserController.usuarioId)
 
 export default router;

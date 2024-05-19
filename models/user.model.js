@@ -11,6 +11,17 @@ const findOneByEmail = async (email) => {
     const { rows } = await pool.query(query)
     return rows[0]}
 
+    const findOneById = async (id) => {
+        const query = {
+            text: `
+                SELECT * FROM skaters
+                WHERE id = $1
+            `,
+            values: [id]
+        }
+        const { rows } = await pool.query(query)
+        return rows[0]}
+
 
 const create = async ({ email, nombre, password, anos_experiencia, especialidad, foto, estado }) => {
     const query = {
@@ -57,6 +68,7 @@ const eliminar = async (id) => {
 export const UserModel = {
     actualizar,
     findOneByEmail,
+    findOneById,
     create,
     eliminar
 }
