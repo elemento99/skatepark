@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Register Page</h1>
+    <form id="registerForm">
+        <input type="text" name="username" placeholder="Ingrese Username">
+        <input type="email" name="email" placeholder="Ingrese Email">
+        <input type="password" name="password" placeholder="Ingrese contraseña">
+        <button type="submit">Acceder</button>
+    </form>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"
+        integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const registerForm = document.querySelector('#registerForm')
+
+        registerForm.addEventListener('submit', async (e) => {
+            try {
+                e.preventDefault()
+                const email = e.target.email.value
+                const password = e.target.password.value
+                const username = e.target.username.value
+
+                const { data } = await axios.post('/api/v1/users/register', { email, password, username })
+                localStorage.setItem('token', data.token)
+                alert('Usuario creado... redirigiendo al dashboard')
+                window.location.href = "/dashboard"
+            } catch (error) {
+                console.log(error)
+                alert(error.response.data.msg)
+            }
+        })
+    </script>
+</body>
+
+</html>
