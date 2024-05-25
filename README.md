@@ -1,4 +1,4 @@
-# Ejemplo g67 app de libros
+
 
 ## Primeros pasos
 
@@ -18,3 +18,6 @@ Para visualizar el sitio web visite: `http://localhost:3001`
 
 ## Seeders
 El archivo para inicilizar la base de datos está en: `database/queries.sql` 
+
+## packages
+Multer

@@ -15,6 +15,43 @@
           </div>
         </div>
         <button class="btn btn-success mb-3">Ingresar</button>
-        <p>¿Aún no tienes cuenta? <a href="http://localhost:3001/register">Regístrate</a></p>
+        <p>¿Aún no tienes cuenta? <a href="/register">Regístrate</a></p>
       </form>
     </div>
+
+
+
+
+    <script>
+          const loginForm = document.querySelector('#login');
+
+      loginForm.addEventListener('submit', async (e) => {
+        try {
+          e.preventDefault();
+          const email = e.target.email.value;
+          const password = e.target.password.value;
+          const { data } = await axios.post('/users/login', { email, password });
+          localStorage.clear()
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('id', data.id);
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('nombre', data.nombre);
+          localStorage.setItem('anos_experiencia', data.anos_experiencia);
+          localStorage.setItem('especialidad', data.especialidad);
+          alert('Credenciales correctas... redirigiendo al dashboard');
+          window.location.href = '/dashboard';
+          console.log(data);
+        } catch (error) {
+          console.error(error);
+          if (error.response && error.response.data && error.response.data.msg) {
+            alert(error.response.data.msg);
+          } else {
+            alert('Ocurrió un error al procesar la solicitud.');
+          }
+        }
+      });
+    
+
+    </script>
+
+

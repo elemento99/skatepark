@@ -47,3 +47,60 @@
       <a href="http://localhost:3001/login">Iniciar Sesión</a> |
       <a href="http://localhost:3001/register">Registrarme</a>
     </div>
+
+<script>
+
+
+
+  document.getElementById('email').value = email;
+  document.getElementById('nombre').value = nombre;
+  document.getElementById('anos_experiencia').value = anos_experiencia;
+  document.getElementById('especialidad').value = especialidad;
+
+
+  actualizarForm.addEventListener('submit', async (e) => {
+    try {
+      e.preventDefault();
+
+      const email = e.target.email.value;
+      const nombre = e.target.nombre.value;
+      const password = e.target.password.value;
+      const password2 = e.target.password2.value;
+      const anos_experiencia = e.target.anos_experiencia.value;
+      const especialidad = e.target.especialidad.value;
+      const foto = "foto"; // Placeholder
+      const estado = true; // Placeholder
+
+      if (password !== password2) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+      const response = await axios.put(`/users/${id}`, {
+        email,
+        nombre,
+        password,
+        anos_experiencia,
+        especialidad,
+        foto,
+        estado
+      },config);
+
+      console.log(response);
+
+
+
+;
+      alert('Usuario actualizado... redirigiendo al dashboard');
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.data && error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert('Ocurrió un error al procesar la solicitud.');
+      }
+    }
+  })
+
+</script>
+</script>
