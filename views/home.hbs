@@ -1,85 +1,58 @@
+<h1>Skatepark</h1>
 
-    <h1>Skatepark</h1>
+<div class="py-4">
+  <h2>Lista de participantes</h2>
+  <hr />
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Años de experiencia</th>
+        <th scope="col">Especialidad</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"> <!-- Agregamos el ID al tbody -->
+      <tr>
+        <th scope="row">1</th>
+        <td><div></div></td>
+        <td>Tony Hawk</td>
+        <td>12</td>
+        <td>Kickflip</td>
+        <td class="text-success font-weight-bold">Aprobado</td>
+      </tr>
+      <!-- Otros elementos del tbody -->
+    </tbody>
+  </table>
+  <a href="http://localhost:3001/login">Iniciar Sesión</a> |
+  <a href="http://localhost:3001/register">Registrarme</a>
+</div>
 
-    <div class="py-4">
-      <h2>Lista de participantes</h2>
+<script>
+  const tbody = document.querySelector('#tbody');
 
-      <hr />
-
-      <table class="table table-dark">
-        <thead>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const { data } = await axios.get('/users/all');
+      console.log({data});
+      const users = data.users;
+      tbody.innerHTML = "";
+      users.forEach(u => {
+        tbody.innerHTML += `
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Foto</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Años de experiencia</th>
-            <th scope="col">Especialidad</th>
-            <th scope="col">Estado</th>
+            <th scope="row">${u.id}</th>
+            <td><div style='background-image: url("../imgs/${u.foto}");'></div></td>
+            <td>${u.nombre}</td>
+            <td>${u.anos_experiencia}</td>
+            <td>${u.especialidad}</td>
+            ${ u.estado ? '<td class="text-success font-weight-bold">Aprobado</td>' : '<td class="text-warning font-weight-bold">En revisión</td>'}
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td><div></div></td>
-            <td>Tony Hawk</td>
-            <td>12</td>
-            <td>Kickflip</td>
-            <td class="text-success font-weight-bold">Aprobado</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td><div></div></td>
-            <td>Evelien Bouilliart</td>
-            <td>10</td>
-            <td>Heelflip</td>
-            <td class="text-success font-weight-bold">Aprobado</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td><div></div></td>
-            <td>Danny Way</td>
-            <td>8</td>
-            <td>Ollie</td>
-            <td class="text-warning font-weight-bold">En revisión</td>
-          </tr>
-        </tbody>
-      </table>
-      <a href="http://localhost:3001/login">Iniciar Sesión</a> |
-      <a href="http://localhost:3001/register">Registrarme</a>
-    </div>
-
-    <script>
-
-      const tbody = document.querySelector('#tbody');
-
-      document.addEventListener('DOMContentLoaded', async()=>{
-        try {
-
-          const { data } = await axios.get('/users/users');
-          const users = data.users;
-          tbody.innerHTML = "";
-          users.forEach(u=>{
-
-            tbody.innerHTML += `
-              <tr>
-              <th scope="row">${u.id}</th>
-              <td><div style='background-image: url("../imgs/${u.foto}");'></div></td>
-              <td>${u.nombre}</td>
-              <td>${u.anos_experiencia}</td>
-              <td>${u.especialidad}</td>
-              ${ u.estado ? '<td class="text-success font-weight-bold">Aprobado</td>' : '<td class="text-warning font-weight-bold">En revisión</td>'}
-              </tr>
-            
-            `
-          })
-
-        } catch (error) {
-          console.error(error);
-        }
-
-
+        `;
       });
-
-
-    </script>
-  
+    } catch (error) {
+      console.error(error);
+    }
+  });
+</script>

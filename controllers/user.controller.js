@@ -150,7 +150,7 @@ const eliminarUsuario = async (req, res) => {
 
 const getAll = async(req, res) =>{
     try {
-        const users = await SkaterModel.all();
+        const users = await UserModel.all();
         return res.json({users});
     } catch (error) {
         console.error(error);
