@@ -20,4 +20,13 @@ Para visualizar el sitio web visite: `http://localhost:3001`
 El archivo para inicilizar la base de datos está en: `database/queries.sql` 
 
 ## packages
-Multer
+-Nodemon
+-Express-fileupload
+-Jwt
+-Bcrypt
+-HandleBars
+-Path
+-Express
+
+
+

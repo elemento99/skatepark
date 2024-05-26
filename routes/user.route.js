@@ -9,7 +9,6 @@ router.post('/login', UserController.login)
 router.post('/register', UserController.register)
 router.put('/:id', verifyTokenJWT, UserController.actualizarUsuario)
 router.delete('/:id', UserController.eliminarUsuario)
-// router.get('/:id', UserController.usuarioId)
 router.get('/all', UserController.getAll)
 router.put('/state/admin', UserController.changeState)
 

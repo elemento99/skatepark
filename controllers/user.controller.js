@@ -82,7 +82,7 @@ const register = async (req, res) => {
             estado: true
         });
 
-        // Enviar respuesta exitosa
+       
         return res.status(200).json({ ok: true, msg: 'Usuario creado correctamente' });
 
     } catch (error) {
