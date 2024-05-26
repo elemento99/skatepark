@@ -37,7 +37,8 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register')
 })
-
+app.get('/admin', (req, res) => {
+    res.render('Admin', )})
 
 app.get('/dashboard', (req, res) => {
     res.render('datos', )})

@@ -51,6 +51,16 @@ const actualizar = async (usuarios) => {
     }
 }
 
+const changeState = async(email, state)=>{
+    const query = {
+        text: `UPDATE skaters SET estado = $2 WHERE email = $1 RETURNING *;`,
+        values: [email, state]
+    }
+
+    const { rows } = await pool.query(query);
+    return rows[0]; 
+}
+
 
 const eliminar = async (id) => {
 
@@ -81,5 +91,6 @@ export const UserModel = {
     findOneById,
     create,
     eliminar,
-    all
+    all,
+    changeState
 }

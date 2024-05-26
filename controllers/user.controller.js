@@ -157,11 +157,28 @@ const getAll = async(req, res) =>{
         return res.status(error.code).json({ok: false, msg: error.msg});   
     }
 }
+
+
+const changeState = async(req, res)=>{
+    try {
+        
+        const { email, state} = req.body;
+
+        const user = await UserModel.changeState(email, state);
+
+        return res.json({ok: true, user});
+    } catch (error) {
+        console.error(error);
+        return res.status(error.code.json({ok: false, msg: error.msg}));
+    }
+}
+
 export const UserController = {
     actualizarUsuario,
     login,
     register,
     eliminarUsuario,
     usuarioId,
-    getAll
+    getAll,
+    changeState
 }
