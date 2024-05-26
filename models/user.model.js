@@ -63,6 +63,16 @@ const eliminar = async (id) => {
 
 }
 
+const all = async()=>{
+    const query = {
+        text: `SELECT * FROM skaters ORDER BY id;`,
+        values: []
+    }
+
+    const { rows } = await pool.query(query);
+    return rows;
+}
+
 
 
 export const UserModel = {
@@ -70,5 +80,6 @@ export const UserModel = {
     findOneByEmail,
     findOneById,
     create,
-    eliminar
+    eliminar,
+    all
 }

@@ -10,5 +10,6 @@ router.post('/register', UserController.register)
 router.put('/:id', verifyTokenJWT, UserController.actualizarUsuario)
 router.delete('/:id', UserController.eliminarUsuario)
 router.get('/:id', UserController.usuarioId)
+router.get('/users', UserController.getAll)
 
 export default router;

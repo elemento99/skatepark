@@ -43,38 +43,53 @@ const login = async (req, res) => {
     }
 }
 const __dirname = import.meta.dirname;
-const register = async(req, res) => {
+
+const register = async (req, res) => {
     try {
         const { email, name, password, anos_experiencia, especialidad } = req.body;
-        const foto = req.files.foto
+        const foto = req.files.foto;
 
-        console.log({ email, name, password, anos_experiencia, especialidad, foto })
+        console.log({ email, name, password, anos_experiencia, especialidad, foto });
 
         const newUser = await UserModel.findOneByEmail(email);
-        if(newUser){
-            throw { code: 400, msg: 'El usuario ya existe!'};
+        if (newUser) {
+            return res.status(400).json({ ok: false, msg: 'El usuario ya existe!' });
         }
 
         let pictureFile = foto;
         let uploadPath = path.join(__dirname, '../public/imgs/', pictureFile.name);
-        
-        pictureFile.mv(uploadPath, (err) => {
-            if(err){
-                throw { code: 500, msg: err}
-            }
-        })
+
+        await new Promise((resolve, reject) => {
+            pictureFile.mv(uploadPath, (err) => {
+                if (err) {
+                    reject({ code: 500, msg: err });
+                } else {
+                    resolve();
+                }
+            });
+        });
 
         const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt)
+        const hashPassword = await bcrypt.hash(password, salt);
 
-        await UserModel.create({email, nombre: name, password: hashPassword, anos_experiencia, especialidad, foto: pictureFile.name, estado:true});
-        
+        await UserModel.create({
+            email,
+            nombre: name,
+            password: hashPassword,
+            anos_experiencia,
+            especialidad,
+            foto: pictureFile.name,
+            estado: true
+        });
 
-            } catch (error) {
+        // Enviar respuesta exitosa
+        return res.status(200).json({ ok: true, msg: 'Usuario creado correctamente' });
+
+    } catch (error) {
         console.error(error);
-        return res.status(error.code).json({ok: false, msg: error.msg});
+        return res.status(error.code || 500).json({ ok: false, msg: error.msg || 'Error del servidor' });
     }
-}
+};
 
 
 const usuarioId = async (req, res) => {
@@ -132,10 +147,21 @@ const eliminarUsuario = async (req, res) => {
 
 }
 
+
+const getAll = async(req, res) =>{
+    try {
+        const users = await SkaterModel.all();
+        return res.json({users});
+    } catch (error) {
+        console.error(error);
+        return res.status(error.code).json({ok: false, msg: error.msg});   
+    }
+}
 export const UserController = {
     actualizarUsuario,
     login,
     register,
     eliminarUsuario,
-    usuarioId
+    usuarioId,
+    getAll
 }

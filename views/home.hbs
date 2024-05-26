@@ -48,59 +48,38 @@
       <a href="http://localhost:3001/register">Registrarme</a>
     </div>
 
-<script>
+    <script>
+
+      const tbody = document.querySelector('#tbody');
+
+      document.addEventListener('DOMContentLoaded', async()=>{
+        try {
+
+          const { data } = await axios.get('/users/users');
+          const users = data.users;
+          tbody.innerHTML = "";
+          users.forEach(u=>{
+
+            tbody.innerHTML += `
+              <tr>
+              <th scope="row">${u.id}</th>
+              <td><div style='background-image: url("../imgs/${u.foto}");'></div></td>
+              <td>${u.nombre}</td>
+              <td>${u.anos_experiencia}</td>
+              <td>${u.especialidad}</td>
+              ${ u.estado ? '<td class="text-success font-weight-bold">Aprobado</td>' : '<td class="text-warning font-weight-bold">En revisión</td>'}
+              </tr>
+            
+            `
+          })
+
+        } catch (error) {
+          console.error(error);
+        }
 
 
-
-  document.getElementById('email').value = email;
-  document.getElementById('nombre').value = nombre;
-  document.getElementById('anos_experiencia').value = anos_experiencia;
-  document.getElementById('especialidad').value = especialidad;
+      });
 
 
-  actualizarForm.addEventListener('submit', async (e) => {
-    try {
-      e.preventDefault();
-
-      const email = e.target.email.value;
-      const nombre = e.target.nombre.value;
-      const password = e.target.password.value;
-      const password2 = e.target.password2.value;
-      const anos_experiencia = e.target.anos_experiencia.value;
-      const especialidad = e.target.especialidad.value;
-      const foto = "foto"; // Placeholder
-      const estado = true; // Placeholder
-
-      if (password !== password2) {
-        alert('Las contraseñas no coinciden');
-        return;
-      }
-      const response = await axios.put(`/users/${id}`, {
-        email,
-        nombre,
-        password,
-        anos_experiencia,
-        especialidad,
-        foto,
-        estado
-      },config);
-
-      console.log(response);
-
-
-
-;
-      alert('Usuario actualizado... redirigiendo al dashboard');
-      window.location.href = "/";
-    } catch (error) {
-      console.error(error);
-      if (error.response && error.response.data && error.response.data.msg) {
-        alert(error.response.data.msg);
-      } else {
-        alert('Ocurrió un error al procesar la solicitud.');
-      }
-    }
-  })
-
-</script>
-</script>
+    </script>
+  
