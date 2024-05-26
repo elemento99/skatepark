@@ -30,9 +30,9 @@
 
     <button type="submit" class="btn btn-primary">Actualizar</button>
   </form>
-  <div>
-          <button class="btn btn-danger">Eliminar cuenta</button>
-        </div>
+<div>
+  <button id="eliminarCuentaBtn" class="btn btn-danger">Eliminar cuenta</button>
+</div>
 </div>
 
 <script>
@@ -102,5 +102,33 @@
       }
     }
   })
+
+
+const eliminarCuentaBtn = document.getElementById('eliminarCuentaBtn');
+
+  eliminarCuentaBtn.addEventListener('click', async () => {
+    try {
+      const confirmed = confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');
+
+      if (!confirmed) {
+        return;
+      }
+
+      const response = await axios.delete(`/users/${id}`, config);
+
+      console.log(response);
+
+      alert('Cuenta eliminada correctamente.');
+      window.location.href = "/login"; // Redirige a la página de inicio de sesión después de eliminar la cuenta
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.data && error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert('Ocurrió un error al procesar la solicitud.');
+      }
+    }
+  });
+
 
 </script>
